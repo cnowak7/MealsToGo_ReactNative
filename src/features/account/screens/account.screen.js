@@ -7,12 +7,20 @@ import {
   AccountCover,
   AuthButton,
   Title,
+  WatermelonLottieView,
 } from "../components/account.styles";
 
 export const AccountScreen = ({ navigation }) => {
   return (
     <AccountBackground>
       <AccountCover />
+      <WatermelonLottieView
+        key="animation"
+        autoPlay
+        loop
+        resizeMode="cover"
+        source={require("../../../../assets/watermelon.json")}
+      />
       <Title>Meals To Go</Title>
       <AccountContainer>
         <AuthButton
