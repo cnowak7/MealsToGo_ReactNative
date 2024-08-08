@@ -1,25 +1,28 @@
+import { Lato_400Regular, useFonts as useLato } from "@expo-google-fonts/lato";
+import {
+  Oswald_400Regular,
+  useFonts as useOswald,
+} from "@expo-google-fonts/oswald";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import React from "react";
 import { ThemeProvider } from "styled-components/native";
-import { initializeApp } from "firebase/app";
-import {
-  useFonts as useOswald,
-  Oswald_400Regular,
-} from "@expo-google-fonts/oswald";
-import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
 
-import { theme } from "./src/infrastructure/theme";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { Navigation } from "./src/infrastructure/navigation";
+import { theme } from "./src/infrastructure/theme";
+
+import { initializeApp } from "firebase/app";
+import { getReactNativePersistence, initializeAuth } from "firebase/auth";
 
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
 import {
   API_KEY,
+  APP_ID,
   AUTH_DOMAIN,
+  MESSAGING_SENDER_ID,
   PROJECT_ID,
   STORAGE_BUCKET,
-  MESSAGING_SENDER_ID,
-  APP_ID,
 } from "@env";
 
 const firebaseConfig = {
@@ -31,7 +34,10 @@ const firebaseConfig = {
   appId: APP_ID,
 };
 
-initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(firebaseConfig);
+initializeAuth(firebaseApp, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
 
 export default function App() {
   const [oswaldLoaded] = useOswald({
