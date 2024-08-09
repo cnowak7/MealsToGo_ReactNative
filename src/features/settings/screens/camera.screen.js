@@ -1,27 +1,33 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Camera, CameraView } from "expo-camera";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
+
 import { Text } from "../../../components/typography/text.component";
+
+import { AuthenticationContext } from "../../../services/authentication/authentication.context";
 
 const ProfileCamera = styled(CameraView)`
   width: 100%;
   height: 100%;
 `;
 
-const CameraTouchableView = styled(TouchableOpacity)`
+const CameraTouchableOverlay = styled(TouchableOpacity)`
   width: 100%;
   height: 100%;
 `;
 
-export const CameraScreen = () => {
+export const CameraScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const cameraRef = useRef();
+  const { user } = useContext(AuthenticationContext);
 
   const snap = async () => {
     if (cameraRef) {
       const photo = await cameraRef.current.takePictureAsync();
-      console.log(photo);
+      AsyncStorage.setItem(`${user.uid}-photo`, photo.uri);
+      navigation.goBack();
     }
   };
 
@@ -40,7 +46,7 @@ export const CameraScreen = () => {
   }
   return (
     <ProfileCamera ref={cameraRef} facing="front">
-      <CameraTouchableView onPress={snap} />
+      <CameraTouchableOverlay onPress={snap} />
     </ProfileCamera>
   );
 };
