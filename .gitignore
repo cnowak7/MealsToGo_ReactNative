@@ -28,6 +28,14 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# firebase functions
+*/node_modules/**/*
+firebase-debug.log
+ui-debug.log
+
+# ignore `.firebaserc` FOR NOW
+.firebaserc 
+
 # local env files
 .env*.local
 .env
